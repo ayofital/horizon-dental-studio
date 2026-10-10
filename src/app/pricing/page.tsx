@@ -1,22 +1,18 @@
-import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
 import Button from "@/components/Button";
 import PricingList from "@/components/PricingList";
 import { consultationPrices, pricingCategories } from "@/data/pricing";
 import { treatments } from "@/data/treatments";
 import "./pricing.css";
 
-const title = "Treatment Prices | Horizon Dental Studio";
+const title = "Pricing";
 const description = "Explore indicative treatment and consultation prices, with clear guidance on fees at Horizon Dental Studio, a fictional private dental practice in London.";
 
-export const metadata: Metadata = {
-    title,
-    description,
-    openGraph: { title, description, type: "website" },
-};
+export const metadata = createPageMetadata(title, description, "/pricing");
 
 export default function PricingPage() {
     return (
-        <main className="pricing-page">
+        <main id="main-content" tabIndex={-1} className="pricing-page">
             <section className="section pricing-intro" aria-labelledby="pricing-heading">
                 <div className="container">
                     <p className="eyebrow">Transparent pricing</p>

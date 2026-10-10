@@ -8,6 +8,10 @@ const require = createRequire(import.meta.url);
 const modules = new Map();
 let saved;
 let persistenceError;
+let notificationError;
+let scheduled = [];
+let notified = [];
+let schedulingError;
 class SupabaseConfigurationError extends Error {}
 function load(path) {
     if (modules.has(path)) return modules.get(path);
@@ -16,6 +20,8 @@ function load(path) {
     new Function("exports", "require", compiled)(exports, (name) => {
         if (name === "@/lib/booking-store") return { saveBooking: async (data) => { if (persistenceError) throw persistenceError; saved = data; } };
         if (name === "@/lib/supabase/server") return { SupabaseConfigurationError };
+        if (name === "next/server") return { after: (callback) => { if (schedulingError) throw schedulingError; scheduled.push(callback); } };
+        if (name === "@/lib/notifications/booking-email") return { notifyBooking: async (data) => { notified.push(data); if (notificationError) throw notificationError; } };
         return name.startsWith("@/") ? load(`src/${name.slice(2)}.ts`) : require(name);
     });
     modules.set(path, exports);
@@ -55,6 +61,7 @@ test("London date follows clinic timezone across midnight and summer time", () =
 });
 
 test("route passes only validated data to persistence and returns a safe stored summary", async () => {
+    scheduled = []; notified = [];
     const success = await POST(request(JSON.stringify({ ...example, status: "confirmed", id: "untrusted" })));
     assert.equal(success.status, 201);
     const result = await success.json();
@@ -65,6 +72,11 @@ test("route passes only validated data to persistence and returns a safe stored 
     assert(!Object.hasOwn(saved, "status"));
     assert.deepEqual(result.summary, { treatment: example.treatment, preferredDate: example.preferredDate, preferredTime: "Morning" });
     assert(!Object.hasOwn(result, "email"));
+    assert.equal(scheduled.length, 1);
+    assert.equal(notified.length, 0);
+    await scheduled[0]();
+    assert.deepEqual(notified, [saved]);
+    scheduled = []; notified = [];
     saved = undefined;
     const invalid = await POST(request(JSON.stringify({ ...example, consent: false })));
     assert.equal(invalid.status, 422);
@@ -73,10 +85,12 @@ test("route passes only validated data to persistence and returns a safe stored 
     assert.equal((await POST(request("bad json"))).status, 400);
     assert.equal((await POST(request("a".repeat(16001)))).status, 413);
     assert.equal(saved, undefined);
+    assert.equal(scheduled.length, 0);
     assert.equal((await POST({ text: async () => { throw new Error("read failed"); } })).status, 500);
 });
 
 test("configuration and insert failures return safe errors and log no payload or database details", async () => {
+    scheduled = []; notified = [];
     const logs = [];
     const original = console.error;
     console.error = (...args) => logs.push(args.join(" "));
@@ -93,7 +107,30 @@ test("configuration and insert failures return safe errors and log no payload or
         assert.equal(logs.length, 2);
         assert(!logs.join(" ").includes("private"));
         assert(!logs.join(" ").includes(example.email));
+        assert.equal(scheduled.length, 0);
+        assert.equal(notified.length, 0);
     } finally { persistenceError = undefined; console.error = original; }
+});
+
+test("notification and scheduling failures cannot overturn a stored booking", async () => {
+    const warnings = [];
+    const original = console.warn;
+    console.warn = (...args) => warnings.push(args.join(" "));
+    scheduled = []; notified = [];
+    try {
+        notificationError = new Error("private provider detail");
+        const response = await POST(request(JSON.stringify(example)));
+        assert.equal(response.status, 201);
+        assert.equal((await response.json()).stored, true);
+        assert.equal(scheduled.length, 1);
+        await scheduled[0]();
+        assert.equal(notified.length, 1);
+        schedulingError = new Error("private scheduling detail");
+        assert.equal((await POST(request(JSON.stringify(example)))).status, 201);
+        assert.equal(warnings.length, 2);
+        assert(!warnings.join(" ").includes("private"));
+        assert(!warnings.join(" ").includes(example.email));
+    } finally { notificationError = undefined; schedulingError = undefined; console.warn = original; }
 });
 
 

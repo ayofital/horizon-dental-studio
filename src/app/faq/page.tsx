@@ -1,22 +1,18 @@
-import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import Button from "@/components/Button";
 import FAQItem from "@/components/FAQItem";
 import { faqCategories, faqs } from "@/data/faqs";
 import "./faq.css";
 
-const title = "Frequently Asked Questions | Horizon Dental Studio";
+const title = "FAQ";
 const description = "Find clear answers about appointments, treatment options, fees and aftercare at Horizon Dental Studio, a fictional private dental practice concept.";
 
-export const metadata: Metadata = {
-    title,
-    description,
-    openGraph: { title, description, type: "website" },
-};
+export const metadata = createPageMetadata(title, description, "/faq");
 
 export default function FAQPage() {
     return (
-        <main className="faq-page">
+        <main id="main-content" tabIndex={-1} className="faq-page">
             <section className="section faq-page-intro" aria-labelledby="faq-heading">
                 <div className="container">
                     <p className="eyebrow">Clear answers</p>

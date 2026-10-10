@@ -1,6 +1,8 @@
 import { validateBooking, type BookingResponse } from "@/lib/booking";
 import { saveBooking } from "@/lib/booking-store";
 import { SupabaseConfigurationError } from "@/lib/supabase/server";
+import { after } from "next/server";
+import { notifyBooking } from "@/lib/notifications/booking-email";
 
 function reply(body: BookingResponse, status = 200) {
     return Response.json(body, { status });
@@ -20,6 +22,15 @@ export async function POST(request: Request) {
         if (!data) return reply({ ok: false, message: "Please check your request details.", errors }, 422);
 
         await saveBooking(data);
+        // Delivery must never delay or overturn a successfully stored booking receipt.
+        try {
+            after(async () => {
+                try { await notifyBooking(data); }
+                catch { console.warn("Booking notification failed. Booking remains stored."); }
+            });
+        } catch {
+            console.warn("Booking notification could not be scheduled. Booking remains stored.");
+        }
         return reply({ ok: true, stored: true, message: "Your consultation request has been received. Your preferred date and time are not confirmed appointments. This fictional practice does not send follow-up emails.", summary: { treatment: data.treatment, preferredDate: data.preferredDate, preferredTime: data.preferredTime } }, 201);
     } catch (error) {
         const configurationMissing = error instanceof SupabaseConfigurationError;

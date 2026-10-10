@@ -1,6 +1,6 @@
 export default function TreatmentLoading() {
     return (
-        <main>
+        <main id="main-content" tabIndex={-1}>
             <section className="section treatment-page-intro" aria-busy="true">
                 <div className="container" role="status">
                     <p className="eyebrow">Your treatment options</p>

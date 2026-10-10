@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, type FormEvent } from "react";
-import { bookingTimes, bookingTreatments, validateBooking, type BookingErrors, type BookingField, type BookingResponse, type BookingSummary } from "@/lib/booking";
+import { bookingTimes, bookingTreatments, bookingResponseSchema, validateBooking, type BookingErrors, type BookingField, type BookingSummary } from "@/lib/booking";
 
 const personalFields = [
     { name: "fullName", label: "Full name", type: "text", autoComplete: "name", maxLength: 100 },
@@ -42,7 +42,7 @@ export default function BookingForm({ minimumDate }: { minimumDate: string }) {
         setStatus("pending");
         try {
             const response = await fetch("/api/bookings", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data), signal: AbortSignal.timeout(15000) });
-            const result: BookingResponse = await response.json();
+            const result = bookingResponseSchema.parse(await response.json());
             if (response.status === 422 && !result.ok && result.errors) {
                 showErrors(form, result.errors);
                 setStatus("idle");
@@ -74,8 +74,8 @@ export default function BookingForm({ minimumDate }: { minimumDate: string }) {
         <div>
             <form ref={formRef} className="booking-form" onSubmit={submit} noValidate aria-labelledby="booking-form-heading" aria-describedby="booking-form-note" aria-busy={status === "pending"} hidden={status === "success"}>
                 <h2 id="booking-form-heading">Your consultation preferences.</h2>
-                <p id="booking-form-note">Portfolio concept: use example details only, without personal or medical information. Requests are saved for demonstration when configured. No real appointment or email is created. Fields marked * are required.</p>
-                {Object.keys(errors).length > 0 && <p className="booking-error-summary" role="alert">Please check the highlighted fields.</p>}
+                <p id="booking-form-note">Portfolio concept: use example details only, without personal or medical information. Requests are saved for demonstration when configured. A practice notification may be sent when configured; no real appointment is created. Fields marked * are required.</p>
+                {Object.keys(errors).length > 0 && <p className="booking-error-summary" role="alert">Please correct the fields with an error message.</p>}
                 <fieldset disabled={status === "pending"}>
                     <legend className="booking-sr-only">Consultation request</legend>
                     <div className="booking-field-grid">
@@ -85,7 +85,7 @@ export default function BookingForm({ minimumDate }: { minimumDate: string }) {
                         <div className="booking-field"><label htmlFor="booking-preferredTime">Preferred time *</label><select id="booking-preferredTime" name="preferredTime" defaultValue="" required {...props("preferredTime", "booking-time-hint")}><option value="" disabled>Choose a time window</option>{bookingTimes.map((time) => <option key={time}>{time}</option>)}</select><p className="booking-field-hint" id="booking-time-hint">These are broad preferences, not appointment slots.</p>{error("preferredTime")}</div>
                     </div>
                     <div className="booking-field"><label htmlFor="booking-message">Message (optional)</label><textarea id="booking-message" name="message" rows={4} maxLength={2000} {...props("message", "booking-message-hint")} /><p className="booking-field-hint" id="booking-message-hint">A brief outline is enough. Maximum 2,000 characters.</p>{error("message")}</div>
-                    <div className="booking-field"><label className="booking-consent" htmlFor="booking-consent"><input id="booking-consent" name="consent" type="checkbox" required {...props("consent")} /><span>I agree to the example details being stored for this demonstration request, and understand that no real appointment is made or follow-up email sent. *</span></label>{error("consent")}</div>
+                    <div className="booking-field"><label className="booking-consent" htmlFor="booking-consent"><input id="booking-consent" name="consent" type="checkbox" required {...props("consent")} /><span>I agree to the example details being stored and shared with the configured practice inbox for this demonstration request. No real appointment is made or patient confirmation email sent. *</span></label>{error("consent")}</div>
                     <button className="button" type="submit">{status === "pending" ? "Sending your request…" : "Request a consultation"}</button>
                 </fieldset>
                 {status === "failure" && <p className="booking-error-summary" role="alert">{message}</p>}

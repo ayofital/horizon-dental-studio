@@ -1,16 +1,16 @@
-import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
 import Button from "@/components/Button";
 import ContactForm from "@/components/ContactForm";
 import { practice } from "@/data/practice";
 import "./contact.css";
 
-const title = "Contact | Horizon Dental Studio";
+const title = "Contact";
 const description = "Explore contact details, opening hours and a demonstration enquiry form for Horizon Dental Studio, a fictional private dental practice in London.";
-export const metadata: Metadata = { title, description, openGraph: { title, description, type: "website" } };
+export const metadata = createPageMetadata(title, description, "/contact");
 
 export default function ContactPage() {
     return (
-        <main className="contact-page">
+        <main id="main-content" tabIndex={-1} className="contact-page">
             <section className="section contact-intro" aria-labelledby="contact-heading">
                 <div className="container">
                     <p className="eyebrow">Here to help</p>

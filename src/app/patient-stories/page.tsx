@@ -1,21 +1,17 @@
-import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
 import Button from "@/components/Button";
 import TestimonialCard from "@/components/TestimonialCard";
 import { testimonials } from "@/data/testimonials";
 import "./patient-stories.css";
 
-const title = "Patient Stories | Horizon Dental Studio";
+const title = "Patient Stories";
 const description = "Explore fictional patient journeys illustrating thoughtful communication, comfort and personalised dental care at Horizon Dental Studio, a London concept practice.";
 
-export const metadata: Metadata = {
-    title,
-    description,
-    openGraph: { title, description, type: "website" },
-};
+export const metadata = createPageMetadata(title, description, "/patient-stories");
 
 export default function PatientStoriesPage() {
     return (
-        <main className="patient-stories-page">
+        <main id="main-content" tabIndex={-1} className="patient-stories-page">
             <section className="section patient-stories-intro" aria-labelledby="stories-heading">
                 <div className="container">
                     <p className="eyebrow">Patient experiences</p>

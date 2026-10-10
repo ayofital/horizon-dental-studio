@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
 import Image from "next/image";
 import Button from "@/components/Button";
 import PracticeValues from "@/components/PracticeValues";
@@ -6,18 +6,14 @@ import TeamCard from "@/components/TeamCard";
 import { team } from "@/data/team";
 import "./about.css";
 
-const title = "About Our Practice | Horizon Dental Studio";
+const title = "About";
 const description = "Discover the calm, patient-first approach, practice values and concept team behind Horizon Dental Studio, a fictional private dental practice in London.";
 
-export const metadata: Metadata = {
-    title,
-    description,
-    openGraph: { title, description, type: "website" },
-};
+export const metadata = createPageMetadata(title, description, "/about");
 
 export default function AboutPage() {
     return (
-        <main className="about-page">
+        <main id="main-content" tabIndex={-1} className="about-page">
             <section className="section about-intro" aria-labelledby="about-heading">
                 <div className="container">
                     <p className="eyebrow">About Horizon · London</p>
@@ -32,7 +28,7 @@ export default function AboutPage() {
             <section className="section" aria-labelledby="practice-story-heading">
                 <div className="container about-story-grid">
                     <div className="about-clinic-image">
-                        <Image src="/images/clinic-hero.jpg" alt="Dentist speaking with a patient seated in a dental treatment room" fill sizes="(max-width: 960px) 100vw, 50vw" className="hero-image" />
+                        <Image src="/images/clinic-hero.jpg" alt="Dentist speaking with a patient seated in a dental treatment room" fill sizes="(max-width: 960px) calc(100vw - 32px), (max-width: 1232px) calc(50vw - 48px), 568px" className="hero-image" />
                     </div>
                     <div className="about-copy">
                         <p className="eyebrow">Our philosophy</p>

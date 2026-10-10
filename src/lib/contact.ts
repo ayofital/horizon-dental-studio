@@ -1,8 +1,15 @@
+import { z } from "zod";
+
 export const contactSubjects = ["General enquiry", "Visiting the practice", "Treatment question", "Other"] as const;
 export const contactLimits = { fullName: 100, email: 254, phone: 30, subject: 60, message: 2000 };
 export type ContactField = keyof typeof contactLimits;
 export type ContactValues = Record<ContactField, string>;
 export type ContactErrors = Partial<Record<ContactField, string>>;
+
+export const contactResponseSchema = z.union([
+    z.object({ demo: z.literal(true), message: z.string().min(1).max(1000) }),
+    z.object({ errors: z.partialRecord(z.enum(Object.keys(contactLimits) as ContactField[]), z.string().min(1).max(300)).refine((errors) => Object.keys(errors).length > 0) }),
+]);
 
 export function validateContact(input: unknown): { values: ContactValues; errors: ContactErrors } {
     const source = input && typeof input === "object" && !Array.isArray(input)

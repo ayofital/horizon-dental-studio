@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, type FormEvent } from "react";
-import { contactLimits, contactSubjects, validateContact, type ContactErrors, type ContactField } from "@/lib/contact";
+import { contactLimits, contactSubjects, contactResponseSchema, validateContact, type ContactErrors, type ContactField } from "@/lib/contact";
 
 const fields = [
     { name: "fullName", label: "Full name", type: "text", autoComplete: "name", required: true },
@@ -18,8 +18,11 @@ export default function ContactForm() {
     function showErrors(form: HTMLFormElement, nextErrors: ContactErrors) {
         setErrors(nextErrors);
         const field = Object.keys(nextErrors)[0];
-        const element = form.elements.namedItem(field);
-        if (element instanceof HTMLElement) element.focus();
+        // Wait for server validation to re-enable the fieldset and render its error text.
+        requestAnimationFrame(() => {
+            const element = field ? form.elements.namedItem(field) : null;
+            if (element instanceof HTMLElement) element.focus();
+        });
     }
 
     async function submit(event: FormEvent<HTMLFormElement>) {
@@ -43,13 +46,13 @@ export default function ContactForm() {
                 body: JSON.stringify(values),
                 signal: AbortSignal.timeout(15000),
             });
-            const result = await response.json();
-            if (response.status === 422 && result.errors) {
+            const result = contactResponseSchema.parse(await response.json());
+            if (response.status === 422 && "errors" in result) {
                 showErrors(form, result.errors);
                 setStatus("idle");
                 return;
             }
-            if (!response.ok || result.demo !== true) throw new Error("Submission failed");
+            if (!response.ok || !("demo" in result) || result.demo !== true) throw new Error("Submission failed");
             setMessage(result.message);
             setStatus("success");
         } catch {
@@ -66,11 +69,11 @@ export default function ContactForm() {
     });
 
     return (
-        <form className="contact-form" onSubmit={submit} noValidate aria-labelledby="contact-form-heading" aria-describedby="contact-form-note" aria-busy={status === "pending"}>
+        <form className="contact-form" onSubmit={submit} noValidate aria-labelledby="contact-form-heading" aria-describedby="contact-form-note">
             <h2 id="contact-form-heading">A question on your mind?</h2>
             <p id="contact-form-note">This is a demonstration form. Nothing is sent or saved. Use example details and avoid sharing personal or medical information. Fields marked * are required.</p>
-            {Object.keys(errors).length > 0 && <p className="contact-error-summary" role="alert">Please check the highlighted fields.</p>}
-            <fieldset disabled={status === "pending" || status === "success"}>
+            {Object.keys(errors).length > 0 && <p className="contact-error-summary" role="alert">Please correct the fields with an error message.</p>}
+            <fieldset disabled={status === "pending" || status === "success"} aria-busy={status === "pending"}>
                 <legend className="contact-sr-only">Your enquiry</legend>
                 <div className="contact-field-grid">
                     {fields.map((field) => (

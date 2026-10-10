@@ -35,6 +35,11 @@ export type BookingResponse =
     | { ok: true; stored: true; message: string; summary: BookingSummary }
     | { ok: false; message: string; errors?: BookingErrors };
 
+export const bookingResponseSchema = z.discriminatedUnion("ok", [
+    z.object({ ok: z.literal(true), stored: z.literal(true), message: z.string().min(1).max(1000), summary: bookingSchema.pick({ treatment: true, preferredTime: true }).extend({ preferredDate: z.iso.date() }) }),
+    z.object({ ok: z.literal(false), message: z.string().min(1).max(1000), errors: z.partialRecord(bookingSchema.keyof(), z.string().min(1).max(300)).refine((errors) => Object.keys(errors).length > 0).optional() }),
+]);
+
 export function validateBooking(input: unknown) {
     const result = bookingSchema.safeParse(input);
     const errors: BookingErrors = {};

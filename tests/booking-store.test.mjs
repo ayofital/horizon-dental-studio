@@ -44,3 +44,11 @@ test("repository sanitizes Supabase insert failure", async () => {
     const subject = load("src/lib/booking-store.ts", { "@/lib/supabase/server": { getSupabaseServerClient: () => ({ from: () => ({ insert: async () => ({ error: { message: "private SQL and personal data" } }) }) }) } });
     await assert.rejects(subject.saveBooking({}), { message: "Booking persistence failed." });
 });
+
+test("repository normalizes thrown insert exceptions without masking configuration errors", async () => {
+    const subject = load("src/lib/booking-store.ts", { "@/lib/supabase/server": { getSupabaseServerClient: () => ({ from: () => ({ insert: async () => { throw new Error("private connection details"); } }) }) } });
+    await assert.rejects(subject.saveBooking({}), { message: "Booking persistence failed." });
+    const configurationError = new Error("configuration missing");
+    const unconfigured = load("src/lib/booking-store.ts", { "@/lib/supabase/server": { getSupabaseServerClient: () => { throw configurationError; } } });
+    await assert.rejects(unconfigured.saveBooking({}), error => error === configurationError);
+});

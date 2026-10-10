@@ -1,3 +1,4 @@
+import { createPageMetadata, siteDescription } from "@/lib/seo";
 import FAQItem from "@/components/FAQItem";
 import { faqPreview as faqs } from "@/data/faqs";
 import TeamCard from "@/components/TeamCard";
@@ -10,13 +11,15 @@ import Button from "@/components/Button";
 import TreatmentCard from "@/components/TreatmentCard";
 import { treatments } from "@/data/treatments";
 
+export const metadata = createPageMetadata("Dental Practice Concept", siteDescription, "/");
+
 export default function Home() {
   return (
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <section className="hero">
           <div className="container hero-grid">
             <div className="hero-content">
-              <p className="eyebrow">Private dentistry in London</p>
+              <p className="eyebrow">A fictional dental practice · London</p>
 
               <h1>Confident smiles start with exceptional care.</h1>
 
@@ -38,17 +41,17 @@ export default function Home() {
               <div className="hero-image-wrapper">
                 <Image
                     src="/images/clinic-hero.jpg"
-                    alt="Modern private dental clinic treatment room"
+                    alt="Dentist speaking with a patient seated in a dental treatment room"
                     fill
-                    priority
+                    preload
                     className="hero-image"
-                    sizes="(max-width: 960px) 100vw, 45vw"
+                    sizes="(max-width: 732px) calc(100vw - 32px), (max-width: 960px) 700px, (max-width: 1232px) calc(47.5vw - 45.6px), 540px"
                 />
               </div>
 
               <div className="hero-card">
-                <strong>4.9/5</strong>
-                <span>Rated by our patients</span>
+                <strong>Your pace</strong>
+                <span>Thoughtful care</span>
               </div>
             </div>
           </div>
@@ -57,23 +60,23 @@ export default function Home() {
         <section className="trust-strip">
           <div className="container trust-grid">
             <div>
-              <strong>4.9/5</strong>
-              <span>Patient rating</span>
+              <strong>Clear advice</strong>
+              <span>Understand your options</span>
             </div>
 
             <div>
-              <strong>2,000+</strong>
-              <span>Patients treated</span>
+              <strong>Comfort first</strong>
+              <span>Care at your pace</span>
             </div>
 
             <div>
-              <strong>15+ years</strong>
-              <span>Combined experience</span>
+              <strong>Modern care</strong>
+              <span>Thoughtful planning</span>
             </div>
 
             <div>
-              <strong>Central London</strong>
-              <span>Easy access</span>
+              <strong>London concept</strong>
+              <span>An illustrative setting</span>
             </div>
           </div>
         </section>
@@ -147,7 +150,7 @@ export default function Home() {
               </div>
 
               <p>
-                Our clinicians combine technical expertise with clear communication
+                Meet our fictional clinicians, illustrating clear communication
                 and thoughtful patient care.
               </p>
             </div>
@@ -165,12 +168,12 @@ export default function Home() {
             <div className="section-heading">
               <div>
                 <p className="eyebrow">Patient stories</p>
-                <h2>What our patients say.</h2>
+                <h2>Illustrative patient stories.</h2>
               </div>
 
               <p>
-                Comfortable care, clear advice and treatment experiences built around
-                trust.
+                Fictional examples of comfortable care, clear advice and treatment
+                experiences built around trust.
               </p>
             </div>
 

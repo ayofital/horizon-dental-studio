@@ -14,7 +14,7 @@ export default function TeamCard({ member }: TeamCardProps) {
                     alt={`${member.name}, ${member.role}`}
                     fill
                     className="team-image"
-                    sizes="(max-width: 960px) 100vw, 33vw"
+                    sizes="(max-width: 732px) calc(100vw - 34px), (max-width: 960px) 698px, (max-width: 1232px) calc(33.333vw - 28.67px), 382px"
                 />
             </div>
 

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Button from "@/components/Button";
@@ -22,13 +23,7 @@ function getTreatment(slug: string) {
 export async function generateMetadata({ params }: TreatmentPageProps): Promise<Metadata> {
     const { slug } = await params;
     const treatment = getTreatment(slug);
-    const title = `${treatment.name} | Horizon Dental Studio`;
-
-    return {
-        title,
-        description: treatment.description,
-        openGraph: { title, description: treatment.description, type: "website" },
-    };
+    return createPageMetadata(treatment.name, `${treatment.description} Explore this treatment at Horizon Dental Studio, a fictional practice concept.`, `/treatments/${treatment.slug}`);
 }
 
 export default async function TreatmentPage({ params }: TreatmentPageProps) {
@@ -36,7 +31,7 @@ export default async function TreatmentPage({ params }: TreatmentPageProps) {
     const treatment = getTreatment(slug);
 
     return (
-        <main>
+        <main id="main-content" tabIndex={-1}>
             <section className="section treatment-page-intro">
                 <div className="container">
                     <nav className="treatment-breadcrumb" aria-label="Breadcrumb">

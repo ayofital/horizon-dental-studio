@@ -27,13 +27,13 @@ export default function Footer() {
                 <div>
                     <p className="footer-heading">Explore</p>
 
-                    <div className="footer-links">
+                    <nav className="footer-links" aria-label="Footer navigation">
                         {footerLinks.map((item) => (
                             <Link key={item.href} href={item.href}>
                                 {item.label}
                             </Link>
                         ))}
-                    </div>
+                    </nav>
                 </div>
 
                 <div>

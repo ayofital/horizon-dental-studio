@@ -1,16 +1,13 @@
-import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo";
 import Button from "@/components/Button";
 import TreatmentCard from "@/components/TreatmentCard";
 import { treatments } from "@/data/treatments";
 
-export const metadata: Metadata = {
-    title: "Dental Treatments | Horizon Dental Studio",
-    description: "Explore general dentistry, teeth whitening, clear aligners and dental implants at Horizon Dental Studio, a fictional London practice.",
-};
+export const metadata = createPageMetadata("Treatments", "Explore general dentistry, teeth whitening, clear aligners and dental implants at Horizon Dental Studio, a fictional London practice concept.", "/treatments");
 
 export default function TreatmentsPage() {
     return (
-        <main>
+        <main id="main-content" tabIndex={-1}>
             <section className="section treatment-page-intro">
                 <div className="container">
                     <p className="eyebrow">Our treatments</p>
