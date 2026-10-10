@@ -896,9 +896,136 @@ p {
   background: #f0f0ed;
 }
 
+/* Treatment pages */
+
+.treatment-page-intro {
+  background: var(--color-accent);
+}
+
+.treatment-page-intro h1 {
+  max-width: 850px;
+  margin-bottom: 24px;
+  font-size: clamp(42px, 5.5vw, 72px);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+.treatment-overview {
+  padding-top: 72px;
+}
+
+.treatment-breadcrumb {
+  margin-bottom: 40px;
+  color: var(--color-primary);
+}
+
+.treatment-breadcrumb a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.treatment-starting-price {
+  margin: 0;
+  color: var(--color-primary);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.treatment-note {
+  max-width: 700px;
+  margin: 24px 0 0;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.treatment-detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  align-items: start;
+  gap: 80px;
+}
+
+.treatment-copy h2 {
+  font-size: clamp(36px, 4vw, 48px);
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.treatment-copy h3 {
+  margin-top: 32px;
+  font-size: 24px;
+}
+
+.treatment-copy > p:not(.eyebrow),
+.treatment-process p {
+  color: var(--color-text-muted);
+  text-wrap: pretty;
+}
+
+.treatment-benefits {
+  padding: 32px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-large);
+}
+
+.treatment-benefits h2 {
+  font-size: 24px;
+}
+
+.treatment-benefits ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.treatment-benefits li + li {
+  margin-top: 16px;
+}
+
+.treatment-process {
+  margin: 0;
+  padding-left: 28px;
+}
+
+.treatment-process li {
+  padding: 0 0 24px 12px;
+}
+
+.treatment-process li + li {
+  padding-top: 24px;
+  border-top: 1px solid rgba(23, 63, 53, 0.15);
+}
+
+.treatment-process li::marker {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.treatment-process h3 {
+  margin-bottom: 8px;
+  font-size: 22px;
+}
+
+.treatment-process p {
+  margin-bottom: 0;
+}
+
+.treatment-page-intro a:focus-visible,
+.treatment-overview a:focus-visible,
+.treatment-page-intro ~ .section a:focus-visible,
+.treatment-page-intro ~ .section summary:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 6px;
+}
+
 /* Tablet */
 
 @media (max-width: 960px) {
+  .treatment-detail-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
   .desktop-nav {
     display: none;
   }

@@ -18,7 +18,7 @@ export default function TreatmentCard({
                 <p>{treatment.description}</p>
             </div>
 
-            <Link href={`/treatments/${treatment.slug}`}>
+            <Link href={`/treatments/${treatment.slug}`} aria-label={`Learn more about ${treatment.name}`}>
                 Learn more
             </Link>
         </article>

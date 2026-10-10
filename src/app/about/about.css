@@ -1,0 +1,179 @@
+.about-page h1,
+.about-page h2,
+.about-page h3 {
+  text-wrap: balance;
+}
+
+.about-page p {
+  text-wrap: pretty;
+}
+
+.about-intro {
+  background: var(--color-accent);
+}
+
+.about-intro h1 {
+  max-width: 1000px;
+  margin-bottom: 40px;
+  font-size: clamp(42px, 5.5vw, 72px);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.about-intro-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  border-top: 1px solid rgba(23, 63, 53, 0.2);
+  padding-top: 32px;
+}
+
+.about-intro-bottom p {
+  max-width: 650px;
+  margin: 0;
+  font-size: 20px;
+}
+
+.about-intro-bottom .button {
+  flex-shrink: 0;
+}
+
+.about-story-grid,
+.about-modern-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 64px;
+  align-items: center;
+}
+
+.about-clinic-image {
+  position: relative;
+  min-height: 520px;
+  overflow: hidden;
+  border-radius: var(--radius-large);
+}
+
+.about-copy h2,
+.about-modern-care h2 {
+  font-size: clamp(36px, 4vw, 52px);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+}
+
+.about-copy > p:not(.eyebrow),
+.about-modern-grid p {
+  color: var(--color-text-muted);
+  font-size: 18px;
+}
+
+.about-copy p:last-child,
+.about-modern-grid p:last-child {
+  margin-bottom: 0;
+}
+
+.practice-values-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 32px;
+}
+
+.practice-values-grid article {
+  border-top: 1px solid rgba(23, 63, 53, 0.2);
+  padding-top: 24px;
+}
+
+.practice-value-number {
+  display: block;
+  margin-bottom: 32px;
+  color: var(--color-primary);
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.practice-values-grid h3 {
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.practice-values-grid p {
+  margin-bottom: 0;
+  color: var(--color-text);
+}
+
+.about-concept-note {
+  margin: 24px 0 0;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.about-patient-section {
+  background: var(--color-surface);
+}
+
+.about-modern-care {
+  border-top: 1px solid var(--color-border);
+  padding-top: 40px;
+}
+
+.about-modern-grid {
+  align-items: start;
+}
+
+.about-page a:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 6px;
+}
+
+.about-page .final-cta a:focus-visible {
+  outline-color: var(--color-surface);
+}
+
+@media (max-width: 960px) {
+  .about-story-grid,
+  .about-modern-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .practice-values-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .about-intro-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .about-clinic-image {
+    min-height: 420px;
+  }
+}
+
+@media (max-width: 640px) {
+  .practice-values-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .practice-value-number {
+    margin-bottom: 16px;
+  }
+
+  .about-intro-bottom p {
+    font-size: 18px;
+  }
+
+  .about-clinic-image {
+    min-height: 320px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-page .button,
+  .about-page .button:hover {
+    transition: none;
+    transform: none;
+  }
+}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { practice } from "@/data/practice";
 
 const footerLinks = [
     { label: "Treatments", href: "/treatments" },
@@ -39,11 +40,11 @@ export default function Footer() {
                     <p className="footer-heading">Visit</p>
 
                     <p>
-                        24 Brook Street
+                        {practice.address[0]}
                         <br />
-                        London
+                        {practice.address[1]}
                         <br />
-                        W1K 5DF
+                        {practice.address[2]}
                     </p>
                 </div>
 
@@ -51,11 +52,11 @@ export default function Footer() {
                     <p className="footer-heading">Opening hours</p>
 
                     <p>
-                        Mon–Fri: 8:00–18:00
+                        {practice.hours[0]}
                         <br />
-                        Saturday: 9:00–15:00
+                        {practice.hours[1]}
                         <br />
-                        Sunday: Closed
+                        {practice.hours[2]}
                     </p>
                 </div>
             </div>

@@ -1,10 +1,11 @@
 import FAQItem from "@/components/FAQItem";
-import { faqs } from "@/data/faqs";
+import { faqPreview as faqs } from "@/data/faqs";
 import TeamCard from "@/components/TeamCard";
 import TestimonialCard from "@/components/TestimonialCard";
 import { team } from "@/data/team";
 import { testimonials } from "@/data/testimonials";
 import Image from "next/image";
+import Link from "next/link";
 import Button from "@/components/Button";
 import TreatmentCard from "@/components/TreatmentCard";
 import { treatments } from "@/data/treatments";
@@ -27,9 +28,9 @@ export default function Home() {
               <div className="hero-actions">
                 <Button href="/book">Book a consultation</Button>
 
-                <a href="/treatments" className="secondary-link">
+                <Link href="/treatments" className="secondary-link">
                   Explore treatments
-                </a>
+                </Link>
               </div>
             </div>
 
