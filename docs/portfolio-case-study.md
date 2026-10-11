@@ -8,7 +8,7 @@ Horizon Dental Studio is a fictional private dental practice website and consult
 
 - Fictional concept project and portfolio case study.
 - Full-stack product and website development; no real client relationship is claimed.
-- Public deployment is pending.
+- [Public concept demo](https://horizon-dental-studio.vercel.app) · [GitHub repository](https://github.com/ayofital/horizon-dental-studio).
 
 ## Role
 
@@ -137,7 +137,7 @@ Captures use the existing local production build. No new booking was submitted f
 
 ## Stack
 
-Next.js 16, React, TypeScript, plain CSS, Zod, Supabase PostgreSQL, Resend and Node.js 22. Vercel is the intended deployment target; a public live demo is pending.
+Next.js 16, React, TypeScript, plain CSS, Zod, Supabase PostgreSQL, Resend and Node.js 22. The public concept demo is deployed on Vercel with Node.js 22.
 
 ## Future Improvements
 

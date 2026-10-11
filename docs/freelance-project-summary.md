@@ -36,7 +36,9 @@ I can connect a considered business website to a real request-handling system, c
 
 [View the project case study](portfolio-case-study.md) · [Browse screenshots](screenshots/README.md)
 
-Public deployment is pending. Future work includes real availability, a secure practice dashboard, reliable notification retries and broader accessibility testing.
+[View the live concept demo](https://horizon-dental-studio.vercel.app) · [View GitHub](https://github.com/ayofital/horizon-dental-studio).
+
+Future work includes real availability, a secure practice dashboard, reliable notification retries and broader accessibility testing.
 
 ## Concept Disclosure
 

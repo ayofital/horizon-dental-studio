@@ -2,7 +2,7 @@
 
 A concept website and consultation-request platform for a premium private dental practice. Built as a full-stack portfolio case study, from treatment discovery and patient-focused UX to validated PostgreSQL persistence and practice email notifications.
 
-**Status:** Product phases 1–15 completed; documentation and portfolio captures prepared. 41 automated tests passed in the latest QA audit. Public deployment is pending. Horizon Dental Studio is fictional.
+**Status:** Product phases 1–15 completed; documentation and portfolio captures prepared. 41 automated tests passed in the latest QA audit. The public concept demo is deployed on Vercel. Horizon Dental Studio is fictional.
 
 ![Horizon Dental Studio desktop homepage](docs/screenshots/home-desktop.jpg)
 
@@ -57,7 +57,7 @@ A request is **not a confirmed appointment**. The contact demo sends and stores 
 | Supabase PostgreSQL | Persistent consultation requests through server-only access |
 | Resend | Optional practice notification delivery |
 | Node.js 22 | Development, build and native test runner; tested on v22.23.2 |
-| Vercel | Intended deployment target; public deployment is pending |
+| Vercel | Production hosting with Node.js 22 |
 
 No Tailwind or additional UI framework is used.
 
@@ -136,11 +136,11 @@ The public site origin must have no path, credentials, query or fragment; produc
 
 Use Node.js 22; the verified environment is **v22.23.2**.
 
-1. Clone this repository using its actual URL. `<repository-url>` below is a placeholder; no remote URL is currently configured.
+1. Clone the public repository.
 2. Install dependencies and copy the environment template:
 
    ```powershell
-   git clone <repository-url> horizon-dental-studio
+   git clone https://github.com/ayofital/horizon-dental-studio.git
    cd horizon-dental-studio
    npm install
    Copy-Item .env.example .env.local
@@ -220,7 +220,11 @@ Captured from the local production build in Chromium. JPEG files reflect the bro
 
 ## Live demo
 
-**Deployment pending.** Vercel is the intended target. Add the verified public demo URL here after deployment and origin configuration; no live URL is claimed yet.
+[Visit the live concept demo](https://horizon-dental-studio.vercel.app) · [View the public GitHub repository](https://github.com/ayofital/horizon-dental-studio)
+
+Production uses Node.js 22 and all six configured environment variables. `NEXT_PUBLIC_SITE_URL` is `https://horizon-dental-studio.vercel.app`.
+
+Phase 18 production checks on 11 October 2026 verified all 12 pages, expected 404s, canonical/social metadata, sitemap/robots, the social image and responsive homepage/form layouts at 390px and 1440px. Exactly one fictional production booking was stored, and its matching Resend notification reported delivered. Contact remained a validation-only demonstration. Public JavaScript contained neither configured provider secret; environment-file requests returned 404 and booking GET returned 405. Delivery status confirms recipient-server acceptance, not inbox placement.
 
 ## Challenges and engineering decisions
 

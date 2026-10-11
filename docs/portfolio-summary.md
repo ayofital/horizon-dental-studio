@@ -33,8 +33,8 @@ Next.js 16 · React · TypeScript · Plain CSS · Zod · Supabase PostgreSQL · 
 
 ## Suggested CTAs
 
-- **View Live Site** — add after deployment; currently pending.
-- **View GitHub** — use the actual repository URL when configured.
+- [**View Live Site**](https://horizon-dental-studio.vercel.app).
+- [**View GitHub**](https://github.com/ayofital/horizon-dental-studio).
 - **Read Case Study** — [full case study](portfolio-case-study.md).
 
 [Desktop preview](screenshots/home-desktop.jpg) · [Mobile preview](screenshots/home-mobile.jpg)
