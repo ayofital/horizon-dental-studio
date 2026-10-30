@@ -9,14 +9,16 @@ const require = createRequire(import.meta.url);
 function load(path, resolve = () => { throw new Error("Unexpected import"); }) {
     const exports = {};
     const compiled = ts.transpileModule(readFileSync(path, "utf8"), {
-        compilerOptions: { module: ts.ModuleKind.CommonJS },
+        compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
     }).outputText;
     new Function("exports", "require", compiled)(exports, resolve);
     return exports;
 }
 
+const bodyReader = load("src/lib/request-body.ts");
 const validation = load("src/lib/contact.ts", require);
 const { POST } = load("src/app/api/contact/route.ts", (name) => {
+    if (name === "@/lib/request-body") return bodyReader;
     assert.equal(name, "@/lib/contact");
     return validation;
 });
@@ -60,7 +62,7 @@ test("contact read and unexpected validation failures return safe 500 responses 
     const logs = [];
     console.error = (...args) => logs.push(args.join(" "));
     try {
-        const brokenValidator = load("src/app/api/contact/route.ts", () => ({ validateContact: () => { throw new Error("private payload"); } }));
+        const brokenValidator = load("src/app/api/contact/route.ts", (name) => name === "@/lib/request-body" ? bodyReader : ({ validateContact: () => { throw new Error("private payload"); } }));
         for (const response of [await POST({ text: async () => { throw new Error("private payload"); } }), await brokenValidator.POST(request("{}"))]) {
             assert.equal(response.status, 500);
             const body = await response.json();

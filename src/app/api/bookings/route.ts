@@ -1,3 +1,4 @@
+import { readFormBody, RequestBodyTooLargeError } from "@/lib/request-body";
 import { validateBooking, type BookingResponse } from "@/lib/booking";
 import { saveBooking } from "@/lib/booking-store";
 import { SupabaseConfigurationError } from "@/lib/supabase/server";
@@ -10,8 +11,7 @@ function reply(body: BookingResponse, status = 200) {
 
 export async function POST(request: Request) {
     try {
-        const body = await request.text();
-        if (body.length > 16000) return reply({ ok: false, message: "Your request is too long. Please shorten it and try again." }, 413);
+        const body = await readFormBody(request);
         let input: unknown;
         try {
             input = JSON.parse(body);
@@ -33,6 +33,7 @@ export async function POST(request: Request) {
         }
         return reply({ ok: true, stored: true, message: "Your consultation request has been received. Your preferred date and time are not confirmed appointments. This fictional practice does not send follow-up emails.", summary: { treatment: data.treatment, preferredDate: data.preferredDate, preferredTime: data.preferredTime } }, 201);
     } catch (error) {
+        if (error instanceof RequestBodyTooLargeError) return reply({ ok: false, message: "Your request is too long. Please shorten it and try again." }, 413);
         const configurationMissing = error instanceof SupabaseConfigurationError;
         console.error(configurationMissing ? "Booking request unavailable: check server Supabase configuration." : "Booking request failed during processing or persistence.");
         return reply({ ok: false, message: configurationMissing ? "Consultation requests are temporarily unavailable. Please try again later." : "We couldn’t confirm receipt of your request. Please try again later." }, configurationMissing ? 503 : 500);
